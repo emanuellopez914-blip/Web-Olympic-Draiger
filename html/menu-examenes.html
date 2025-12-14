@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympic Draiger - Menú de Exámenes</title>
+    <link rel="stylesheet" href="/sytiles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../pictures/logo-olimpic-draiger.png">
+    <style>
+        /* Estilos específicos para el menú de exámenes */
+        :root {
+            --primary: #1a237e;
+            --secondary: #d32f2f;
+            --accent: #ff9800;
+            --light: #f5f5f5;
+            --dark: #212121;
+        }
+        
+        .exams-menu {
+            padding: 2rem 0;
+            background-color: #f9f9f9;
+        }
+        
+        .menu-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .menu-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .menu-header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .menu-header p {
+            color: var(--dark);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .exams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .exam-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .exam-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: var(--secondary);
+        }
+        
+        .exam-card.featured {
+            border-color: var(--accent);
+            position: relative;
+        }
+        
+        .exam-card.featured::before {
+            content: 'ACTUAL';
+            position: absolute;
+            top: 15px;
+            right: -35px;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: 0 3px 10px rgba(255, 152, 0, 0.3);
+        }
+        
+        .exam-date {
+            background: linear-gradient(135deg, var(--primary), #283593);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .exam-date .month {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .exam-date .day {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 5px 0;
+        }
+        
+        .exam-date .year {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .exam-info {
+            padding: 1.8rem;
+        }
+        
+        .exam-info h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .exam-details {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .exam-details li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .exam-details i {
+            color: var(--secondary);
+            width: 20px;
+        }
+        
+        .exam-stats {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--light);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--dark);
+        }
+        
+        .exam-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-exam {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-view {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-view:hover {
+            background-color: #0d1a6b;
+        }
+        
+        .btn-qr {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-qr:hover {
+            background-color: #b71c1c;
+        }
+        
+        .upcoming-exams {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+        }
+        
+        .upcoming-exams h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .calendar-month {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .calendar-month h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .month-date {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .month-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-upcoming {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .status-past {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+        
+        .instructions {
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .instructions h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .instructions-list {
+            list-style: none;
+            counter-reset: instruction-counter;
+        }
+        
+        .instructions-list li {
+            counter-increment: instruction-counter;
+            margin-bottom: 1.5rem;
+            padding-left: 3.5rem;
+            position: relative;
+        }
+        
+        .instructions-list li:before {
+            content: counter(instruction-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .instructions-list h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .exams-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .exam-actions {
+                flex-direction: column;
+            }
+            
+            .calendar {
+                grid-template-columns: 1fr;
+            }
+            
+            .exam-card.featured::before {
+                right: -30px;
+                padding: 6px 30px;
+                font-size: 0.8rem;
+            }
+            
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            background-color: #0d1a6b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="/pictures/logo-olimpic-draiger.png" alt="Logo Olympic Draiger" class="logo-img">
+                <div class="logo-text">
+                    <h1>OLYMPIC <span>DRAIGER</span></h1>
+                    <p>Academia de Tae Kwon Do</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../html/index2.html">Inicio</a></li>
+                    <li><a href="menu-examenes.html" class="active">Exámenes</a></li>
+                    <li><a href="../html/index2.html#instructores">Instructores</a></li>
+                    <li><a href="../html/index2.html#clases">Clases</a></li>
+                    <li><a href="../html/index2.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú de Exámenes -->
+    <section class="exams-menu">
+        <div class="menu-container">
+            <div class="menu-header">
+                <h1><i class="fas fa-calendar-alt"></i> Menú de Exámenes</h1>
+                <p>Selecciona el examen que deseas consultar. Cada 3 meses realizamos nuevas evaluaciones para el avance de grados y cinturones.</p>
+            </div>
+            
+            <!-- Exámenes Disponibles -->
+            <div class="exams-grid">
+                <!-- Examen Actual (Destacado) -->
+                <div class="exam-card featured">
+                    <div class="exam-date">
+                        <div class="month">Septiembre</div>
+                        <div class="day">15</div>
+                        <div class="year">2023</div>
+                    </div>
+                    <div class="exam-info">
+                        <h3>Examen de Graduación Otoño 2023</h3>
+                        <ul class="exam-details">
+                            <li><i class="fas fa-clock"></i> <strong>Hora:</strong> 4:00 PM - 7:00 PM</li>
+                            <li><i class="fas fa-map-marker-alt"></i> <strong>Lugar:</strong> Sede Central</li>
+                            <li><i class="fas fa-user-tie"></i> <strong>Examinador:</strong> Gran Maestro Lee Min-ho</li>
+                            <li><i class="fas fa-award"></i> <strong>Cinturones:</strong> Blanco a Azul</li>
+                        </ul>
+                        <div class="exam-stats">
+                            <div class="stat">
+                                <div class="stat-number">32</div>
+                                <div class="stat-label">Examinados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">28</div>
+                                <div class="stat-label">Aprobados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">94%</div>
+                                <div class="stat-label">Éxito</div>
+                            </div>
+                        </div>
+                        <div class="exam-actions">
+                            <button class="btn-exam btn-view" onclick="viewExam('septiembre-2023')">
+                                <i class="fas fa-eye"></i> Ver Resultados
+                            </button>
+                            <button class="btn-exam btn-qr" onclick="generateQR('septiembre-2023')">
+                                <i class="fas fa-qrcode"></i> QR Específico
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Examen Anterior -->
+                <div class="exam-card">
+                    <div class="exam-date">
+                        <div class="month">Junio</div>
+                        <div class="day">10</div>
+                        <div class="year">2023</div>
+                    </div>
+                    <div class="exam-info">
+                        <h3>Examen de Graduación Verano 2023</h3>
+                        <ul class="exam-details">
+                            <li><i class="fas fa-clock"></i> <strong>Hora:</strong> 3:00 PM - 6:30 PM</li>
+                            <li><i class="fas fa-map-marker-alt"></i> <strong>Lugar:</strong> Sede Central</li>
+                            <li><i class="fas fa-user-tie"></i> <strong>Examinador:</strong> Maestra Ana Martínez</li>
+                            <li><i class="fas fa-award"></i> <strong>Cinturones:</strong> Blanco a Verde</li>
+                        </ul>
+                        <div class="exam-stats">
+                            <div class="stat">
+                                <div class="stat-number">28</div>
+                                <div class="stat-label">Examinados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">25</div>
+                                <div class="stat-label">Aprobados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">89%</div>
+                                <div class="stat-label">Éxito</div>
+                            </div>
+                        </div>
+                        <div class="exam-actions">
+                            <button class="btn-exam btn-view" onclick="viewExam('junio-2023')">
+                                <i class="fas fa-eye"></i> Ver Resultados
+                            </button>
+                            <button class="btn-exam btn-qr" onclick="generateQR('junio-2023')">
+                                <i class="fas fa-qrcode"></i> QR Específico
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Otro Examen Anterior -->
+                <div class="exam-card">
+                    <div class="exam-date">
+                        <div class="month">Marzo</div>
+                        <div class="day">18</div>
+                        <div class="year">2023</div>
+                    </div>
+                    <div class="exam-info">
+                        <h3>Examen de Graduación Primavera 2023</h3>
+                        <ul class="exam-details">
+                            <li><i class="fas fa-clock"></i> <strong>Hora:</strong> 9:00 AM - 12:00 PM</li>
+                            <li><i class="fas fa-map-marker-alt"></i> <strong>Lugar:</strong> Sede Norte</li>
+                            <li><i class="fas fa-user-tie"></i> <strong>Examinador:</strong> Gran Maestro Carlos Rodríguez</li>
+                            <li><i class="fas fa-award"></i> <strong>Cinturones:</strong> Todos los niveles</li>
+                        </ul>
+                        <div class="exam-stats">
+                            <div class="stat">
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">Examinados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">42</div>
+                                <div class="stat-label">Aprobados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">93%</div>
+                                <div class="stat-label">Éxito</div>
+                            </div>
+                        </div>
+                        <div class="exam-actions">
+                            <button class="btn-exam btn-view" onclick="viewExam('marzo-2023')">
+                                <i class="fas fa-eye"></i> Ver Resultados
+                            </button>
+                            <button class="btn-exam btn-qr" onclick="generateQR('marzo-2023')">
+                                <i class="fas fa-qrcode"></i> QR Específico
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Próximos Exámenes -->
+            <div class="upcoming-exams">
+                <h2><i class="fas fa-calendar-plus"></i> Próximos Exámenes Programados</h2>
+                <div class="calendar">
+                    <div class="calendar-month">
+                        <h4>Diciembre 2023</h4>
+                        <div class="month-date">15</div>
+                        <div class="month-status status-upcoming">Próximo</div>
+                        <p>Examen de fin de año</p>
+                        <p><small>Inscripciones abiertas</small></p>
+                    </div>
+                    <div class="calendar-month">
+                        <h4>Marzo 2024</h4>
+                        <div class="month-date">16</div>
+                        <div class="month-status status-upcoming">Programado</div>
+                        <p>Examen de primavera</p>
+                        <p><small>Por confirmar</small></p>
+                    </div>
+                    <div class="calendar-month">
+                        <h4>Junio 2024</h4>
+                        <div class="month-date">08</div>
+                        <div class="month-status status-upcoming">Programado</div>
+                        <p>Examen de verano</p>
+                        <p><small>Por confirmar</small></p>
+                    </div>
+                    <div class="calendar-month">
+                        <h4>Septiembre 2024</h4>
+                        <div class="month-date">14</div>
+                        <div class="month-status status-upcoming">Programado</div>
+                        <p>Examen de otoño</p>
+                        <p><small>Por confirmar</small></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instrucciones -->
+            <div class="instructions">
+                <h2><i class="fas fa-info-circle"></i> ¿Cómo usar este menú?</h2>
+                <ol class="instructions-list">
+                    <li>
+                        <h4>Selecciona un examen</h4>
+                        <p>Elige entre los exámenes pasados para ver sus resultados, fotos y diplomas.</p>
+                    </li>
+                    <li>
+                        <h4>Ver resultados completos</h4>
+                        <p>Haz clic en "Ver Resultados" para acceder a la página detallada del examen seleccionado.</p>
+                    </li>
+                    <li>
+                        <h4>Genera código QR específico</h4>
+                        <p>Usa "QR Específico" para crear un código que lleve directamente a ese examen.</p>
+                    </li>
+                    <li>
+                        <h4>Consulta próximas fechas</h4>
+                        <p>Revisa el calendario de exámenes futuros para planificar tu preparación.</p>
+                    </li>
+                </ol>
+            </div>
+            
+            <!-- Botón para volver al inicio -->
+            <div class="back-to-home">
+                <a href="../html/index2.html" class="btn-home">
+                    <i class="fas fa-home"></i> Volver a la Página Principal
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Olympic Draiger</h3>
+                    <p>Academia de Tae Kwon Do con más de 15 años formando deportistas de élite con valores de disciplina, respeto y excelencia.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Principal 456, Ciudad</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@olimpicdraiger.com</p>
+                    <p><i class="fas fa-clock"></i> Lunes a Viernes: 4:00 PM - 9:00 PM</p>
+                    <p><i class="fas fa-clock"></i> Sábados: 9:00 AM - 1:00 PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <a href="../html/index2.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                    <a href="menu-examenes.html"><i class="fas fa-chevron-right"></i> Exámenes</a>
+                    <a href="../html/index2.html#instructores"><i class="fas fa-chevron-right"></i> Instructores</a>
+                    <a href="../html/index2.html#clases"><i class="fas fa-chevron-right"></i> Clases</a>
+                    <a href="../html/index2.html#ubicacion"><i class="fas fa-chevron-right"></i> Ubicación</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios de Clases</h3>
+                    <p><strong>Infantiles:</strong> Lunes y Miércoles 4:30 PM</p>
+                    <p><strong>Juveniles:</strong> Martes y Jueves 5:30 PM</p>
+                    <p><strong>Adultos:</strong> Lunes a Viernes 7:00 PM</p>
+                    <p><strong>Avanzados:</strong> Sábados 10:00 AM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <img src="../pictures/logo-olimpic-draiger.png" alt="Logo Olympic Draiger" class="footer-logo-img">
+                    <div>
+                        <h4>OLYMPIC DRAIGER</h4>
+                        <p>Excelencia en Tae Kwon Do</p>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; <span id="current-year">2023</span> Academia Olympic Draiger. Todos los derechos reservados.</p>
+                    <p>Sistema de gestión de exámenes - Versión 2.0</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript para el menú de exámenes
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Menú de exámenes de Olympic Draiger cargado");
+            
+            // Actualizar año en el copyright
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Efecto de carga para las tarjetas
+            const examCards = document.querySelectorAll('.exam-card');
+            examCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+        
+        // Función para ver examen (simulación)
+        function viewExam(examId) {
+            // En una implementación real, esto redirigiría a la página específica del examen
+            // Por ahora, simulamos la redirección
+            
+            let examName = '';
+            switch(examId) {
+                case 'septiembre-2023':
+                    examName = 'Examen de Septiembre 2023';
+                    // Redirección real: window.location.href = 'examen-septiembre-2023.html';
+                    break;
+                case 'junio-2023':
+                    examName = 'Examen de Junio 2023';
+                    break;
+                case 'marzo-2023':
+                    examName = 'Examen de Marzo 2023';
+                    break;
+            }
+            
+            // Mostrar mensaje de confirmación
+            const confirmation = confirm(`¿Deseas ver los resultados del ${examName}?\n\nEn una implementación real, serías redirigido a la página detallada del examen.`);
+            
+            if (confirmation) {
+                // Simulación de carga
+                const button = event.target.closest('.btn-exam');
+                const originalText = button.innerHTML;
+                
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...';
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    
+                    // En producción, esto redirigiría:
+                    // window.location.href = `../html/index.html?exam=${examId}`;
+                    
+                    // Por ahora, mostramos un mensaje
+                    alert(`Redirigiendo a la página del ${examName}...\n\nEn producción, esto cargaría la página específica del examen con todos los detalles.`);
+                }, 1500);
+            }
+        }
+        
+        // Función para generar QR (simulación)
+        function generateQR(examId) {
+            let examName = '';
+            switch(examId) {
+                case 'septiembre-2023':
+                    examName = 'Examen de Septiembre 2023';
+                    break;
+                case 'junio-2023':
+                    examName = 'Examen de Junio 2023';
+                    break;
+                case 'marzo-2023':
+                    examName = 'Examen de Marzo 2023';
+                    break;
+            }
+            
+            // Mostrar modal de QR simulado
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1000';
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 10px; text-align: center; max-width: 400px; width: 90%;">
+                    <h3 style="color: #1a237e; margin-bottom: 1rem;">Código QR para ${examName}</h3>
+                    <div style="background: #f5f5f5; width: 200px; height: 200px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                        <i class="fas fa-qrcode" style="font-size: 5rem; color: #757575;"></i>
+                    </div>
+                    <p style="margin-bottom: 1.5rem; color: #666;">Este código QR llevaría directamente a la página del examen seleccionado.</p>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" style="background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            Cerrar
+                        </button>
+                        <button onclick="downloadQR('${examId}')" style="background: #1a237e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-download"></i> Descargar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Cerrar modal al hacer clic fuera
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Función para descargar QR (simulación)
+        function downloadQR(examId) {
+            alert(`Descargando código QR para el examen ${examId}...\n\nEn producción, esto generaría y descargaría un archivo PNG con el código QR.`);
+            
+            // Cerrar el modal después de la descarga simulada
+            const modal = document.querySelector('div[style*="position: fixed"]');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // Navegación suave para enlaces internos
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
